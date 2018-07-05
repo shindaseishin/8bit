@@ -11,3 +11,7 @@ class Help(Component):
     def display(self):
         self._window.addstr(2, 2, "[q] Quit\t[p] Pause\t[h] Halt\t[r] Reset")
         self._window.refresh()
+
+
+    def assert_value(self, value):
+        pass

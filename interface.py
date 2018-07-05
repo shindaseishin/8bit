@@ -1,5 +1,6 @@
 import curses
 from curses import wrapper
+import zope.event
 
 
 import const
@@ -13,6 +14,7 @@ from help import Help
 
 def interface(stdscr):
     curses.noecho()
+    curses.curs_set(0)
     stdscr.clear
     stdscr.refresh()
     stdscr.nodelay(True)
@@ -44,6 +46,8 @@ def interface(stdscr):
 
     help     = Help(curses.newwin(row_height * 1, col_width * 2, row_height * 4, col_width * 2))
 
+    zope.event.subscribers.append(prog_cnt.receive_clock)
+
     clock.start_clock();
 
     if curses.has_colors():
@@ -58,6 +62,7 @@ def interface(stdscr):
                 clock.halt()
             elif c == ord('r') or c == ord('R'):
                 clock.reset()
+                prog_cnt.reset()
 
     else:
         stdscr.addstr(0, 0, "Color support required. Press any key to exit")

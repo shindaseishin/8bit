@@ -1,5 +1,6 @@
 import curses
 
+from eventtypes import ClockPulse
 import const
 
 class Component(object):
@@ -9,6 +10,7 @@ class Component(object):
         self._led_colour    = led_colour
         self._bit_width     = int(bit_width)
         self._format_string = "0{}b".format(self._bit_width)
+        self._bit_mask      = 2**bit_width - 1
         self._cur_value     = 0
 
         self._window.box()
@@ -17,7 +19,7 @@ class Component(object):
 
 
     def display(self):
-        self._window.addstr(2, 2, self.decode_binary(),    curses.color_pair(self._led_colour) | curses.A_BOLD)
+        self._window.addstr(2, 2, self.decode_binary(), curses.color_pair(self._led_colour) | curses.A_BOLD)
         self._window.refresh()
 
 
@@ -31,5 +33,20 @@ class Component(object):
                 string = string + const.LED_ON
         return string
 
+
+    def assert_value(self, value):
+        self._cur_value = value & self._bit_mask
+        self.display()
+
+
     def reset(self):
-        self._cur_value = 0
+        self.assert_value(0)
+        self.display()
+
+    def receive_clock(self, event):
+        if isinstance(event, ClockPulse):
+            self.assert_value(self._cur_value+1)
+
+
+    def reset(self):
+        self.assert_value(0)

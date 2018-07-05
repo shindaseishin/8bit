@@ -1,6 +1,8 @@
 from threading import Timer
+import zope.event
 
 from component import Component
+from eventtypes import ClockPulse
 import const
 
 class Clock(Component):
@@ -20,11 +22,11 @@ class Clock(Component):
     def display(self):
         Component.display(self)
         if self._halt == True:
-            self._window.addstr(3, 2, "Halted")
+            self._window.addstr(4, 2, "Halted")
         elif self._pause == True:
-            self._window.addstr(3, 2, "Paused")
+            self._window.addstr(4, 2, "Paused")
         else:
-            self._window.addstr(3, 2, "      ")
+            self._window.addstr(4, 2, "      ")
         self._window.refresh()
 
 
@@ -32,8 +34,10 @@ class Clock(Component):
         if self._pause == True or self._halt == True:
             pass # NoOp, machine is in a non-executing state
         else:
-            self._cur_value = 1 - self._cur_value
+            self.assert_value(1 - self._cur_value)
             self.display()
+            if self._cur_value == 1:
+                zope.event.notify(ClockPulse())
         self.start_clock()
 
 
@@ -58,6 +62,5 @@ class Clock(Component):
         self._thread.cancel()
         self._halt = False
         self._pause = False;
-        self._cur_value = 0
-        self.display()
+        self.assert_value(0)
         self.start_clock()
