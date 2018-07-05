@@ -12,12 +12,12 @@ class Component(object):
         self._cur_value     = 0
 
         self._window.box()
+        self._window.addstr(0, 2, " " + self._label + " ")
         self.display()
 
 
     def display(self):
         self._window.addstr(2, 2, self.decode_binary(),    curses.color_pair(self._led_colour) | curses.A_BOLD)
-        self._window.addstr(0, 2, " " + self._label + " ")
         self._window.refresh()
 
 
@@ -30,3 +30,6 @@ class Component(object):
             else:
                 string = string + const.LED_ON
         return string
+
+    def reset(self):
+        self._cur_value = 0
