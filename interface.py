@@ -62,6 +62,10 @@ def interface(stdscr):
                 clock.pause_toggle()
             elif c == ord('h') or c == ord('H'):
                 clock.halt()
+            elif c == ord('a') or c == ord('A'):
+                clock.change_speed(-1)
+            elif c == ord('z') or c == ord('Z'):
+                clock.change_speed(1)    
             elif c == ord('r') or c == ord('R'):
                 clock.reset()
                 prog_cnt.reset()

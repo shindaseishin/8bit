@@ -52,6 +52,10 @@ class Clock(Component):
         self.display()
 
 
+    def change_speed(self,  direction):
+        self._cycle += direction * const.CLOCK_CYCLE_DELTA
+        
+        
     def halt(self):
         self._halt = True
         self._thread.cancel()
