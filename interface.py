@@ -10,6 +10,7 @@ from addrbus import AddrBus
 from ctrlbus import CtrlBus
 from clock import Clock
 from help import Help
+from output import Output
 
 
 def interface(stdscr):
@@ -41,12 +42,13 @@ def interface(stdscr):
     reg_b    = Component(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 3), const.COLOR_PAIR_RED,    'Register B',            8)
     inst_reg = Component(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 1), const.COLOR_PAIR_GREEN,  'Instruction Register', 16)
 
-    output   = Component(curses.newwin(row_height * 1, col_width * 2, row_height * 3, col_width * 2), const.COLOR_PAIR_RED,    'Output',                8)
+    output   = Output(curses.newwin(row_height * 1, col_width * 2, row_height * 3, col_width * 2))
     control  = Component(curses.newwin(row_height * 1, col_width * 2, row_height * 2, col_width * 2), const.COLOR_PAIR_YELLOW, 'Control Logic',        24)
 
     help     = Help(curses.newwin(row_height * 1, col_width * 2, row_height * 4, col_width * 2))
 
     zope.event.subscribers.append(prog_cnt.receive_clock)
+    zope.event.subscribers.append(output.receive_clock)
 
     clock.start_clock();
 
