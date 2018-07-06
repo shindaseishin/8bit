@@ -4,4 +4,4 @@ import const
 class AddrBus(Bus):
 
     def __init__(self, window):
-        Bus.__init__(self, window, const.COLOR_PAIR_GREEN, "Address Bus", 16)
+        super().__init__(window, const.COLOR_PAIR_GREEN, "Address Bus", 16)

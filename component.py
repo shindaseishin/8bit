@@ -4,7 +4,7 @@ from eventtypes import ClockPulse
 import const
 
 class Component(object):
-    def __init__(self, window, led_colour, label, bit_width):
+    def __init__(self, window, led_colour, label, bit_width, signal=None, data=None, address=None):
         self._window        = window
         self._label         = label
         self._led_colour    = led_colour
@@ -12,6 +12,9 @@ class Component(object):
         self._format_string = "0{}b".format(self._bit_width)
         self._bit_mask      = 2**bit_width - 1
         self._cur_value     = 0
+        self._signals       = signal
+        self._data          = data
+        self._address       = address
 
         self._window.box()
         self._window.addstr(0, 2, " " + self._label + " ")
@@ -32,6 +35,9 @@ class Component(object):
             else:
                 string = string + const.LED_ON
         return string
+
+    def read_value(self):
+        return self._cur_value
 
 
     def assert_value(self, value):

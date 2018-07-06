@@ -4,8 +4,7 @@ import const
 class Help(Component):
 
     def __init__(self, window):
-        self._window = window
-        super().__init__(self._window, const.COLOR_PAIR_WHITE, "Help", 0)
+        super().__init__(window, const.COLOR_PAIR_WHITE, "Help", 0)
 
 
     def display(self):

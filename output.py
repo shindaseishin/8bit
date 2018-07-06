@@ -8,11 +8,11 @@ class Output(Component):
     MODE_NORMAL = 0
     MODE_TWOS_COMPLEMENT = 1
 #      _      __  __       __  _   __  _   _
-# ___ / \ /|   _) __) |_| |_  |_    / (_) (_|
+#  __ / \ /|   _) __) |_| |_  |_    / (_) (_|
 #     \_/  |  /__ __)   | __) |_)  /  (_)  _)
 
     digits = {
-        '-': ["   ", "___",  "   "],
+        '-': ["   ", " __",  "   "],
         '0': [" _ ", "/ \\", "\\_/"],
         '1': ["   ","/| "," | "],
         '2': ["__ "," _)","/__"],
@@ -25,9 +25,9 @@ class Output(Component):
         '9': [" _ ","(_|"," _)"],
     }
 
-    def __init__(self, window):
+    def __init__(self, window, signal=None, data=None):
         self._mode = Output.MODE_NORMAL
-        Component.__init__(self, window, const.COLOR_PAIR_RED, 'Output', 8)
+        super().__init__(window, const.COLOR_PAIR_RED, 'Output', 8, signal=signal, data=data)
 
 
     def display(self):
@@ -43,4 +43,5 @@ class Output(Component):
 
 
     def receive_clock(self, event):
-        self.assert_value(self._cur_value + 1)
+        if self._signals.read_signal('OI'):
+            self.assert_value(self._data.read_value())

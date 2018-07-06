@@ -8,12 +8,12 @@ import const
 
 class Clock(Component):
 
-    def __init__(self, window, cycle):
+    def __init__(self, window, signal=None):
         self._pause = False
         self._halt = False
-        self._cycle = cycle
+        self._cycle = const.CLOCK_CYCLE
         self._thread = None
-        super().__init__(window, const.COLOR_PAIR_BLUE, "Clock", 1)
+        super().__init__(window, const.COLOR_PAIR_BLUE, "Clock", 1, signal=signal)
 
 
     def __del__(self):
@@ -35,6 +35,9 @@ class Clock(Component):
 
 
     def pulse(self, window):
+        if self._signals.read_signal('HLT'):
+            self.halt()
+
         if self._pause == True or self._halt == True:
             pass # NoOp, machine is in a non-executing state
         else:
