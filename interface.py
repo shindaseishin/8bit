@@ -47,7 +47,6 @@ def interface(stdscr):
 
     help     = Help(curses.newwin(row_height * 1, col_width * 2, row_height * 4, col_width * 2))
 
-    zope.event.subscribers.append(prog_cnt.receive_clock)
     zope.event.subscribers.append(output.receive_clock)
 
     clock.start_clock();
@@ -65,7 +64,9 @@ def interface(stdscr):
             elif c == ord('a') or c == ord('A'):
                 clock.change_speed(-1)
             elif c == ord('z') or c == ord('Z'):
-                clock.change_speed(1)    
+                clock.change_speed(1)
+            elif c == ord('o') or c == ord('O'):
+                clock.manual_pulse()
             elif c == ord('r') or c == ord('R'):
                 clock.reset()
                 prog_cnt.reset()

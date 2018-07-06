@@ -43,6 +43,7 @@ class Component(object):
         self.assert_value(0)
         self.display()
 
+
     def receive_clock(self, event):
         if isinstance(event, ClockPulse):
             self.assert_value(self._cur_value+1)

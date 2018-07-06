@@ -10,7 +10,7 @@ class Help(Component):
 
     def display(self):
         self._window.addstr(2, 2, "[q] Quit\t[p] Pause\t[h] Halt\t[r] Reset")
-        self._window.addstr(3, 2, "[a] Faster\t[z] Slower\t")
+        self._window.addstr(3, 2, "[a] Faster\t[z] Slower\t[o] Pulse")
         self._window.refresh()
 
 

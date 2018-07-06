@@ -1,3 +1,4 @@
+import curses
 from threading import Timer
 import zope.event
 
@@ -27,7 +28,7 @@ class Clock(Component):
             self._window.addstr(4, 2, "Paused")
         else:
             self._window.addstr(4, 2, "      ")
-        
+
         hrz = round(1.0 / self._cycle / 2,  3)
         self._window.addstr(2, 6, "Hz: {:4.3f}".format(hrz))
         self._window.refresh()
@@ -57,12 +58,17 @@ class Clock(Component):
 
     def change_speed(self,  direction):
         self._cycle += direction * const.CLOCK_CYCLE_DELTA
-        
-        
+
+
     def halt(self):
         self._halt = True
         self._thread.cancel()
         self.display()
+
+
+    def manual_pulse(self):
+        if not self._halt and self._pause:
+            zope.event.notify(ClockPulse())
 
 
     def reset(self):
