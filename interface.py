@@ -65,6 +65,7 @@ def interface(stdscr):
             elif c == ord('r') or c == ord('R'):
                 clock.reset()
                 prog_cnt.reset()
+                output.reset()
 
     else:
         stdscr.addstr(0, 0, "Color support required. Press any key to exit")
