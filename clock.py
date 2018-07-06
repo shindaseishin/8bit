@@ -27,6 +27,9 @@ class Clock(Component):
             self._window.addstr(4, 2, "Paused")
         else:
             self._window.addstr(4, 2, "      ")
+        
+        hrz = round(1.0 / self._cycle / 2,  3)
+        self._window.addstr(2, 6, "Hz: {:4.3f}".format(hrz))
         self._window.refresh()
 
 
