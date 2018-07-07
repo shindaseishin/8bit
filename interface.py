@@ -12,6 +12,7 @@ from clock import Clock
 from help import Help
 from output import Output
 from programcounter import ProgramCounter
+from register import Register
 
 
 def interface(stdscr):
@@ -38,9 +39,9 @@ def interface(stdscr):
 
     mem      = Component(curses.newwin(row_height * 2, col_width * 1, row_height * 0, col_width * 0), const.COLOR_PAIR_RED,    'Memory',               11)
 
-    reg_a    = Component(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 1), const.COLOR_PAIR_RED,    'Register A',            8)
+    reg_a    = Register(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 1), 'Register A', 'AI', 'AO', signal=sgnl_bus, data=data_bus)
     alu      = Component(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 2), const.COLOR_PAIR_RED,    'ALU',                   8)
-    reg_b    = Component(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 3), const.COLOR_PAIR_RED,    'Register B',            8)
+    reg_b    = Register(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 3), 'Register B', 'BI', 'BO', signal=sgnl_bus, data=data_bus)
     inst_reg = Component(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 1), const.COLOR_PAIR_GREEN,  'Instruction Register', 16)
 
     output   = Output(curses.newwin(row_height * 1, col_width * 2, row_height * 3, col_width * 2), signal=sgnl_bus, data=data_bus)

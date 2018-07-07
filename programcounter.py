@@ -11,6 +11,8 @@ class ProgramCounter(Component):
     def receive_clock(self, event):
         if self._signals.read_signal('CE'):
             self.assert_value(self._cur_value + 1)
+            return
 
         if self._signals.read_signal('CO'):
             self._data.assert_value(self._cur_value)
+            return

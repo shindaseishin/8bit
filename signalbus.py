@@ -28,7 +28,7 @@ class SignalBus(Bus):
 
     def __init__(self, window):
         super().__init__(window, const.COLOR_PAIR_YELLOW, "Signal Bus", 18)
-        self.assert_value(SignalBus.signals['CE'])
+        self.assert_value(0)
 
         self._mode = 0
 
@@ -40,7 +40,7 @@ class SignalBus(Bus):
 
 
     def reset(self):
-        self.assert_value(SignalBus.signals['CE'])
+        self.assert_value(0)
         self._mode = 0
 
 
@@ -50,10 +50,15 @@ class SignalBus(Bus):
             if self._mode == 0:
                 self.assert_value(SignalBus.signals['CE'])
                 self._mode = 1
-            else:
-                self.assert_value(SignalBus.signals['CO'] | SignalBus.signals['OI'])
+            elif self._mode == 1:
+                self.assert_value(SignalBus.signals['CO'] | SignalBus.signals['AI'])
+                self._mode = 2
+            elif self._mode == 2:
+                self.assert_value(SignalBus.signals['AO'] | SignalBus.signals['BI'])
+                self._mode = 3
+            elif self._mode == 3:
+                self.assert_value(SignalBus.signals['BO'] | SignalBus.signals['OI'])
                 self._mode = 0
-
 
     def enable_signal(self, signal):
         self.assert_value(self._cur_value | SignalBus.signals[signal])

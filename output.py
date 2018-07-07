@@ -45,3 +45,4 @@ class Output(Component):
     def receive_clock(self, event):
         if self._signals.read_signal('OI'):
             self.assert_value(self._data.read_value())
+            return
