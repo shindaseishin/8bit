@@ -77,6 +77,10 @@ def interface(stdscr):
                 clock.change_speed(1)
             elif c == ord('o') or c == ord('O'):
                 clock.manual_pulse()
+            elif c == curses.KEY_UP:
+                mem.scroll_up()
+            elif c == curses.KEY_DOWN:
+                mem.scroll_down()
             elif c == ord('r') or c == ord('R'):
                 inst_dec.reset()
                 clock.reset()
