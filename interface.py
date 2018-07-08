@@ -39,7 +39,7 @@ def interface(stdscr):
     clock    = Clock(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 3), signal=inst_dec)
     prog_cnt = ProgramCounter(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 2), signal=inst_dec, data=data_bus)
 
-    mem      = Memory(curses.newwin(row_height * 3, col_width * 2, row_height * 2, col_width * 0), signal=inst_dec, data=data_bus)
+    mem      = Memory(curses.newwin(row_height * 3, col_width * 2, row_height * 2, col_width * 0), signal=inst_dec, data=data_bus,  address=addr_bus)
 
     reg_a    = Register(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 1), 'Register A', 'AI', 'AO', signal=inst_dec, data=data_bus)
     reg_b    = Register(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 3), 'Register B', 'BI', 'BO', signal=inst_dec, data=data_bus)

@@ -18,7 +18,7 @@ class Memory(Component):
             if i < 2048//16:
                 self._window.addstr(4+i-self._dump_top, 2,  "{:04d}:".format(line))
                 for j in range(16):
-                    self._window.addstr(4+i-self._dump_top, 8 + j*3,  "{:02x} ".format(self._ram[i+j]))
+                    self._window.addstr(4+i-self._dump_top, 8 + j*3,  "{:02x} ".format(self._ram[i*16+j]))
             self._window.refresh()
 
     

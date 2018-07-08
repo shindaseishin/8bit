@@ -105,4 +105,5 @@ venv.bak/
 
 # Eric IDE project file
 *.e4p
+.eric6project/
 
