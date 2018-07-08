@@ -4,7 +4,6 @@ import zope.event
 
 
 import const
-from component import Component
 from databus import DataBus
 from addrbus import AddrBus
 from instdecode import InstDecode
@@ -24,6 +23,7 @@ def interface(stdscr):
     stdscr.refresh()
     stdscr.nodelay(True)
 
+    curses.init_pair(const.COLOR_PAIR_WHITE, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(const.COLOR_PAIR_RED, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(const.COLOR_PAIR_GREEN, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(const.COLOR_PAIR_YELLOW, curses.COLOR_YELLOW, curses.COLOR_BLACK)
@@ -37,7 +37,7 @@ def interface(stdscr):
     inst_dec = InstDecode(curses.newwin(row_height * 1, col_width * 2, row_height * 2, col_width * 2))
 
     clock    = Clock(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 3), signal=inst_dec)
-    prog_cnt = ProgramCounter(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 2), signal=inst_dec, data=data_bus)
+    prog_cnt = ProgramCounter(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 2), signal=inst_dec, data=data_bus,  address=addr_bus)
 
     mem      = Memory(curses.newwin(row_height * 3, col_width * 2, row_height * 2, col_width * 0), signal=inst_dec, data=data_bus,  address=addr_bus)
 
@@ -45,18 +45,26 @@ def interface(stdscr):
     reg_b    = Register(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 3), 'Register B', 'BI', 'BO', signal=inst_dec, data=data_bus)
     alu      = Alu(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 2), reg_a, reg_b, signal=inst_dec, data=data_bus)
 
-    inst_reg = Component(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 1), const.COLOR_PAIR_GREEN,  'Instruction Register', 16)
+#    inst_reg = Component(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 1), const.COLOR_PAIR_GREEN,  'Instruction Register', 16)
 
     output   = Output(curses.newwin(row_height * 1, col_width * 2, row_height * 3, col_width * 2), signal=inst_dec, data=data_bus)
-    help     = Help(curses.newwin(row_height * 1, col_width * 2, row_height * 4, col_width * 2))
+    Help(curses.newwin(row_height * 1, col_width * 2, row_height * 4, col_width * 2))
 
-    zope.event.subscribers.append(inst_dec.receive_clock)
-    zope.event.subscribers.append(prog_cnt.receive_clock)
-    zope.event.subscribers.append(mem.receive_clock)
-    zope.event.subscribers.append(reg_a.receive_clock)
-    zope.event.subscribers.append(reg_b.receive_clock)
-    zope.event.subscribers.append(alu.receive_clock)
-    zope.event.subscribers.append(output.receive_clock)
+    zope.event.subscribers.append(inst_dec.decode_instruction)
+    
+    zope.event.subscribers.append(prog_cnt.clock_write)
+    zope.event.subscribers.append(mem.clock_write)
+    zope.event.subscribers.append(reg_a.clock_write)
+    zope.event.subscribers.append(reg_b.clock_write)
+    zope.event.subscribers.append(alu.clock_write)
+    zope.event.subscribers.append(output.clock_write)
+    
+    zope.event.subscribers.append(prog_cnt.clock_read)
+    zope.event.subscribers.append(mem.clock_read)
+    zope.event.subscribers.append(reg_a.clock_read)
+    zope.event.subscribers.append(reg_b.clock_read)
+    zope.event.subscribers.append(alu.clock_read)
+    zope.event.subscribers.append(output.clock_read)
 
     clock.start_clock();
 

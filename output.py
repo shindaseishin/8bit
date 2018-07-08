@@ -1,13 +1,12 @@
 import curses
 
-from eventtypes import ClockPulse
 from component import Component
 import const
 
 class Output(Component):
     MODE_NORMAL = 0
     MODE_TWOS_COMPLEMENT = 1
-#      _      __  __       __  _   __  _   _
+#      _      __  __       __  _  ___  _   _
 #  __ / \ /|   _) __) |_| |_  |_    / (_) (_|
 #     \_/  |  /__ __)   | __) |_)  /  (_)  _)
 
@@ -20,7 +19,7 @@ class Output(Component):
         '4': ["   ","|_|","  |"],
         '5': [" __","|_ ","__)"],
         '6': [" _ ","|_ ","|_)"],
-        '7': [" __","  /"," / "],
+        '7': ["___","  /"," / "],
         '8': [" _ ","(_)","(_)"],
         '9': [" _ ","(_|"," _)"],
     }
@@ -42,7 +41,7 @@ class Output(Component):
         self._window.refresh()
 
 
-    def receive_clock(self, event):
+    def clock_read(self, event):
         if self._signals.read_signal('OI'):
             self.assert_value(self._data.read_value())
             return

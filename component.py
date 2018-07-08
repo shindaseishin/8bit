@@ -1,6 +1,5 @@
 import curses
 
-from eventtypes import ClockPulse
 import const
 
 class Component(object):
@@ -48,12 +47,13 @@ class Component(object):
     def reset(self):
         self.assert_value(0)
         self.display()
-
-
-    def receive_clock(self, event):
-        if isinstance(event, ClockPulse):
-            self.assert_value(self._cur_value+1)
-
-
-    def reset(self):
-        self.assert_value(0)
+        
+        
+    def clock_write(self,  event):
+        pass
+    
+    
+    def clock_read(self, event):
+        pass
+        
+        

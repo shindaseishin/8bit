@@ -1,4 +1,3 @@
-import curses
 from threading import Timer
 import zope.event
 
@@ -77,6 +76,6 @@ class Clock(Component):
     def reset(self):
         self._thread.cancel()
         self._halt = False
-        self._pause = False;
+        self._pause = True;
         self.assert_value(0)
         self.start_clock()

@@ -1,3 +1,5 @@
+import curses
+
 from component import Component
 import const
 
@@ -5,7 +7,8 @@ class Memory(Component):
     def __init__(self, window, signal=None, data=None, address=None):
         self._ram = [42] * 2**11
         self._dump_top = 0
-        super().__init__(window, const.COLOR_PAIR_RED, "Memory", 8)
+        self._latched_address = 0
+        super().__init__(window, const.COLOR_PAIR_RED, "Memory", 8,  signal=signal,  data=data,  address=address)
         for i in range(2048):
             self._ram[i] = i & self._bit_mask 
 
@@ -18,7 +21,10 @@ class Memory(Component):
             if i < 2048//16:
                 self._window.addstr(4+i-self._dump_top, 2,  "{:04d}:".format(line))
                 for j in range(16):
-                    self._window.addstr(4+i-self._dump_top, 8 + j*3,  "{:02x} ".format(self._ram[i*16+j]))
+                    colour = const.COLOR_PAIR_WHITE
+                    if (i*16+j) == self._latched_address:
+                        colour = const.COLOR_PAIR_GREEN
+                    self._window.addstr(4+i-self._dump_top, 8 + j*3,  "{:02x} ".format(self._ram[i*16+j]), curses.color_pair(colour))
             self._window.refresh()
 
     
@@ -40,5 +46,16 @@ class Memory(Component):
             self._dump_top += delta
             
 
-    def receive_clock(self, event):
+    def clock_write(self, event):
+        if self._signals.read_signal('RO'):
+            self._data.assert_value(self._ram[self._latched_address])
+            return
+        
+        
+    def clock_read(self, event):
+        if self._signals.read_signal('RI'):
+            self._ram[self._latched_address] = self._data.read_value()
+        elif self._signals.read_signal('MI'):
+            self._latched_address = self._address.read_value()
+            self._cur_value = self._ram[self._latched_address]
         self.display()

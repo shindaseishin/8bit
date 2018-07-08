@@ -8,7 +8,11 @@ class Alu(Component):
         self._reg_a = reg_a
         self._reg_b = reg_b
 
-    def receive_clock(self, event):
+    def clock_write(self, event):
+        if self._signals.read_signal('EO'):
+            self._data.assert_value(self._cur_value)
+
+    def clock_read(self, event):
         a = self._reg_a.read_value()
         b = self._reg_b.read_value()
         
@@ -17,8 +21,6 @@ class Alu(Component):
         else:
             self.assert_value(a+b)
         
-        if self._signals.read_signal('EO'):
-            self._data.assert_value(self._cur_value)
         
     def assert_value(self, value):
         super().assert_value(value)
