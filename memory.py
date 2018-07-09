@@ -1,6 +1,7 @@
 import curses
 
 from component import Component
+from eventtypes import ClockPulse
 import const
 
 class Memory(Component):
@@ -47,15 +48,17 @@ class Memory(Component):
             
 
     def clock_write(self, event):
-        if self._signals.read_signal('RO'):
-            self._data.assert_value(self._ram[self._latched_address])
-            return
+        if isinstance(event, ClockPulse) and event.state == 1:
+            if self._signals.read_signal('RO'):
+                self._data.assert_value(self._ram[self._latched_address])
+                return
         
         
     def clock_read(self, event):
-        if self._signals.read_signal('RI'):
-            self._ram[self._latched_address] = self._data.read_value()
-        elif self._signals.read_signal('MI'):
-            self._latched_address = self._address.read_value()
-            self._cur_value = self._ram[self._latched_address]
-        self.display()
+        if isinstance(event, ClockPulse) and event.state == 1:
+            if self._signals.read_signal('RI'):
+                self._ram[self._latched_address] = self._data.read_value()
+            elif self._signals.read_signal('MI'):
+                self._latched_address = self._address.read_value()
+                self._cur_value = self._ram[self._latched_address]
+            self.display()

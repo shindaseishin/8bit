@@ -1,5 +1,6 @@
 import curses
 
+from eventtypes import ClockPulse
 from component import Component
 import const
 
@@ -42,6 +43,7 @@ class Output(Component):
 
 
     def clock_read(self, event):
-        if self._signals.read_signal('OI'):
-            self.assert_value(self._data.read_value())
-            return
+        if isinstance(event, ClockPulse) and event.state == 1:
+            if self._signals.read_signal('OI'):
+                self.assert_value(self._data.read_value())
+                return

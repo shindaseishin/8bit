@@ -1,5 +1,5 @@
 from component import Component
-
+from eventtypes import ClockPulse
 import const
 
 class Register(Component):
@@ -10,15 +10,17 @@ class Register(Component):
         
 
     def clock_write(self, event):
-        if self._signals.read_signal(self._assert):
-            self._data.assert_value(self._cur_value)
-            return
+        if isinstance(event, ClockPulse) and event.state == 1:
+            if self._signals.read_signal(self._assert):
+                self._data.assert_value(self._cur_value)
+                return
             
             
     def clock_read(self, event):
-        if self._signals.read_signal(self._latch):
-            self.assert_value(self._data.read_value())
-            return
+        if isinstance(event, ClockPulse) and event.state == 1:
+            if self._signals.read_signal(self._latch):
+                self.assert_value(self._data.read_value())
+                return
             
 
     def read_value(self):

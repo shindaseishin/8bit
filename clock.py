@@ -37,14 +37,11 @@ class Clock(Component):
         if self._signals.read_signal('HLT'):
             self.halt()
 
-        if self._pause == True or self._halt == True:
-            pass # NoOp, machine is in a non-executing state
-        else:
+        if self._pause != True:
             self.assert_value(1 - self._cur_value)
             self.display()
-            if self._cur_value == 1:
-                zope.event.notify(ClockPulse())
-        self.start_clock()
+            zope.event.notify(ClockPulse(self._cur_value))
+            self.start_clock()
 
 
     def start_clock(self):
@@ -56,6 +53,7 @@ class Clock(Component):
     def pause_toggle(self):
         self._pause = not self._pause
         self.display()
+        self.start_clock()
 
 
     def change_speed(self,  direction):
@@ -70,7 +68,8 @@ class Clock(Component):
 
     def manual_pulse(self):
         if not self._halt and self._pause:
-            zope.event.notify(ClockPulse())
+            self.assert_value(1 - self._cur_value)
+            zope.event.notify(ClockPulse(self._cur_value))
 
 
     def reset(self):
