@@ -9,8 +9,7 @@ class ProgramCounter(Component):
     def clock_write(self, event):
         if isinstance(event, ClockPulse) and event.state == 1:
             if self._signals.read_signal('CO'):
-                #self._data.assert_value(self._cur_value)
-                self._address.assert_value(self._cur_value)
+                self._address.assert_value(self._cur_value*2)
                 return
 
 
@@ -19,8 +18,7 @@ class ProgramCounter(Component):
             if self._signals.read_signal('CE'):
                 self.assert_value(self._cur_value + 1)
                 return
-       
-       
+
+
     def read_count(self):
         return self._cur_value
-

@@ -25,8 +25,11 @@ class Component(object):
         self._window.refresh()
 
 
-    def decode_binary(self):
-        binary = format(self._cur_value, self._format_string)
+    def decode_binary(self, value=None):
+        if value == None:
+            value = self._cur_value
+
+        binary = format(value, self._format_string)
         string = ""
         for i in binary:
             if i == '0':
@@ -47,13 +50,11 @@ class Component(object):
     def reset(self):
         self.assert_value(0)
         self.display()
-        
-        
+
+
     def clock_write(self,  event):
         pass
-    
-    
+
+
     def clock_read(self, event):
         pass
-        
-        

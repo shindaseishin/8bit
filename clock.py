@@ -8,12 +8,12 @@ import const
 class Clock(Component):
 
     def __init__(self, window, signal=None):
-        self._pause = False
+        self._pause = True
         self._halt = False
         self._cycle = const.CLOCK_CYCLE
         self._thread = None
         super().__init__(window, const.COLOR_PAIR_BLUE, "Clock", 1, signal=signal)
-
+        self.assert_value(1)
 
     def __del__(self):
         self._thread.cancel()

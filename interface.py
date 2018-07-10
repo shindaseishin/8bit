@@ -29,17 +29,17 @@ def interface(stdscr):
     curses.init_pair(const.COLOR_PAIR_YELLOW, curses.COLOR_YELLOW, curses.COLOR_BLACK)
     curses.init_pair(const.COLOR_PAIR_BLUE, curses.COLOR_CYAN, curses.COLOR_BLACK)
 
-    row_height = (curses.LINES - 1) // 5
+    row_height = (curses.LINES - 1) // 4
     col_width  = (curses.COLS - 1) // 4
 
     data_bus = DataBus(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 0))
     addr_bus = AddrBus(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 0))
-    inst_dec = InstDecode(curses.newwin(row_height * 1, col_width * 2, row_height * 2, col_width * 2))
+    inst_dec = InstDecode(curses.newwin(row_height * 1, col_width * 2, row_height * 2, col_width * 2), data=data_bus, address=addr_bus)
 
-    clock    = Clock(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 3), signal=inst_dec)
-    prog_cnt = ProgramCounter(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 2), signal=inst_dec, data=data_bus,  address=addr_bus)
+    clock    = Clock(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 2), signal=inst_dec)
+    prog_cnt = ProgramCounter(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 1), signal=inst_dec, data=data_bus,  address=addr_bus)
 
-    mem      = Memory(curses.newwin(row_height * 3, col_width * 2, row_height * 2, col_width * 0), signal=inst_dec, data=data_bus,  address=addr_bus)
+    mem      = Memory(curses.newwin(row_height * 2, col_width * 2, row_height * 2, col_width * 0), signal=inst_dec, data=data_bus,  address=addr_bus)
 
     reg_a    = Register(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 1), 'Register A', 'AI', 'AO', signal=inst_dec, data=data_bus)
     reg_b    = Register(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 3), 'Register B', 'BI', 'BO', signal=inst_dec, data=data_bus)
@@ -47,18 +47,20 @@ def interface(stdscr):
 
 #    inst_reg = Component(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 1), const.COLOR_PAIR_GREEN,  'Instruction Register', 16)
 
-    output   = Output(curses.newwin(row_height * 1, col_width * 2, row_height * 3, col_width * 2), signal=inst_dec, data=data_bus)
-    Help(curses.newwin(row_height * 1, col_width * 2, row_height * 4, col_width * 2))
+    output   = Output(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 3), signal=inst_dec, data=data_bus)
+    Help(curses.newwin(row_height * 1, col_width * 2, row_height * 3, col_width * 2))
 
-    zope.event.subscribers.append(inst_dec.decode_instruction)
-    
+    mem.load_mem_from_file('dump.ram')
+
+    zope.event.subscribers.append(inst_dec.receive_clock)
+
     zope.event.subscribers.append(prog_cnt.clock_write)
     zope.event.subscribers.append(mem.clock_write)
     zope.event.subscribers.append(reg_a.clock_write)
     zope.event.subscribers.append(reg_b.clock_write)
     zope.event.subscribers.append(alu.clock_write)
     zope.event.subscribers.append(output.clock_write)
-    
+
     zope.event.subscribers.append(prog_cnt.clock_read)
     zope.event.subscribers.append(mem.clock_read)
     zope.event.subscribers.append(reg_a.clock_read)

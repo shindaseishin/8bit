@@ -1,6 +1,9 @@
+import curses
+
 import const
 from component import Component
 from eventtypes import ClockPulse
+from microcode import microcode
 
 class InstDecode(Component):
 
@@ -25,13 +28,15 @@ class InstDecode(Component):
     }
 
 
-    def __init__(self, window):
-        self._latched_count = 0
-        super().__init__(window, const.COLOR_PAIR_YELLOW, "Instruction Decoder", 17)
+    def __init__(self, window, data=None, address=None):
+        self._latched_instruction = 0
+
+        super().__init__(window, const.COLOR_PAIR_YELLOW, "Instruction Decoder", 17, data=data, address=address)
         self.assert_value(0)
 
         self._step = 0
 
+        # Display flag names below the LED for that signal
         keys = list(InstDecode.signals)
         for i in range(self._bit_width):
             key = keys[i]
@@ -39,38 +44,33 @@ class InstDecode(Component):
                 self._window.addstr(3+j, 2+i*2, key[j])
 
 
+    def display(self):
+        self._window.addstr(7, 2, self.decode_binary(value=self._latched_instruction), curses.color_pair(const.COLOR_PAIR_RED) | curses.A_BOLD)
+        super().display()
+
+
     def reset(self):
         self.assert_value(0)
-        self._mode = 0
+        self._latched_address = 0
+        self._step = 0
 
 
-    def decode_instruction(self,  event):
+    def receive_clock(self,  event):
         if isinstance(event, ClockPulse) and event.state == 0:
             self.assert_value(0)
-            if self._step == 0:
-                self.enable_signal('CO')
-                self.enable_signal('MI')
-            elif self._step == 1:
-                self.enable_signal('RO')
-                self.enable_signal('AI')
-            elif self._step == 2:
-                self.enable_signal('CE')
-            elif self._step == 3:
-                self.enable_signal('CO')
-                self.enable_signal('MI')
-            elif self._step == 4:
-                self.enable_signal('RO')
-                self.enable_signal('BI')
-            elif self._step == 5:
-                self.enable_signal('EO')
-                self.enable_signal('OI')
-                self._step = -1
-        self._step = (self._step + 1) & 0b111
 
-    
-    def advance_instruction(self, event):
-        if isinstance(event, ClockPulse) and event.state == 1:
-            self._latched_count = self._latched_count
+            instruction = self._latched_instruction << 8 | self._step
+
+            keys = list(InstDecode.signals)
+            for i in keys:
+                mc = microcode[instruction]>>7
+                if bool(mc & InstDecode.signals[i]):
+                    self.enable_signal(i)
+
+            self._step = (self._step + 1) & 0b111
+            if self.read_signal('PSS'):
+                self._step = 0
+
 
     def enable_signal(self, signal):
         self.assert_value(self._cur_value | InstDecode.signals[signal])
@@ -78,3 +78,7 @@ class InstDecode(Component):
 
     def read_signal(self, signal):
         return self._cur_value & InstDecode.signals[signal]
+
+
+    def latch_instruction(self, value):
+        self._latched_instruction = value
