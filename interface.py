@@ -80,6 +80,7 @@ def interface(stdscr):
             clock.reset()
             inst_dec.reset()
 
+
     clock.halt()
 
     curses.echo()

@@ -49,6 +49,19 @@ class Memory(Component):
         return self._ram[address]
 
 
+    def set_ram(self, value):
+        self._ram[self._latched_address] = value
+
+
+    def latch_address(self, address):
+        self._latched_address = address
+        self.latch_value(self._ram[self._latched_address])
+
+
+    def operand(self):
+        self.latch_address(self._latched_address + 1)
+
+
     def load_mem_from_file(self, filename):
         with open(filename, "rb") as f:
-             self._ram = f.read(256)
+             self._ram = bytearray(f.read(256))

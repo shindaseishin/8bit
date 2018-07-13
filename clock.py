@@ -17,7 +17,7 @@ class Clock(Component):
         self.latch_value(1)
 
     def __del__(self):
-        self._thread.cancel()
+        self.stop()
 
 
     def display(self):
@@ -34,23 +34,42 @@ class Clock(Component):
         self._window.refresh()
 
 
-    def pulse(self, window):
+    def pulse(self, restart=True):
         self.latch_value(1 - self._cur_value)
         self.display()
-        self._inst_decode.pulse()
-        self.start()
+        if self._cur_value == 1:
+            hlt = self._inst_decode.clock_high()
+            if hlt:
+                self.halt()
+        else:
+            self._inst_decode.clock_low()
+
+        if restart:
+            self.start()
+
+
+    def manual_pulse(self):
+        if not self._halt and self._pause:
+            self.pulse(restart=False)
 
 
     def start(self):
-        if self._halt != True:
-            self._thread = Timer(self._cycle, self.pulse, [self._window])
+        if not self._halt:
+            self.stop()
+            self._thread = Timer(self._cycle, self.pulse, [])
             self._thread.start()
+
+
+    def stop(self):
+        if self._thread != None:
+            self._thread.cancel()
+            self._thread = None
 
 
     def pause_toggle(self):
         self._pause = not self._pause
-        if not self._pause:
-            self._thread.cancel()
+        if self._pause:
+            self.stop()
         else:
             self.start()
 
@@ -60,20 +79,14 @@ class Clock(Component):
 
 
     def halt(self):
+        self.stop()
         self._halt = True
-        self._thread.cancel()
         self.display()
 
 
-    def manual_pulse(self):
-        if not self._halt and self._pause:
-            self.latch_value(1 - self._cur_value)
-            self._inst_decode.pulse()
-
-
     def reset(self):
-        self._thread.cancel()
+        self.stop()
         self._halt = False
         self._pause = True;
         self.latch_value(1)
-        self.start()
+        self.display()

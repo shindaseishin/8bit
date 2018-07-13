@@ -4,11 +4,13 @@ import const
 from eventtypes import ClockPulse
 
 class Alu(Component):
+    OPERATION_ADD = 1
+    OPERATION_SUB = -1
+
     def __init__(self, window):
         super().__init__(window, const.COLOR_PAIR_RED, 'ALU', 8)
 
 
-    def operate(reg_a, reg_b, data_bus, operation):
-        a = reg_a.read_value()
-        b = reg_b.read_value() * operation
-        data_bus.latch_value(a + b)
+    def operate(self, a, b, operation):
+        b = b * operation
+        self.latch_value(a + b)
