@@ -3,7 +3,7 @@ import curses
 import const
 
 class Component(object):
-    def __init__(self, window, led_colour, label, bit_width, signal=None, data=None, address=None):
+    def __init__(self, window, led_colour, label, bit_width):
         self._window        = window
         self._label         = label
         self._led_colour    = led_colour
@@ -11,9 +11,6 @@ class Component(object):
         self._format_string = "0{}b".format(self._bit_width)
         self._bit_mask      = 2**bit_width - 1
         self._cur_value     = 0
-        self._signals       = signal
-        self._data          = data
-        self._address       = address
 
         self._window.box()
         self._window.addstr(0, 2, " " + self._label + " ")
@@ -42,19 +39,9 @@ class Component(object):
         return self._cur_value
 
 
-    def assert_value(self, value):
+    def latch_value(self, value):
         self._cur_value = value & self._bit_mask
-        self.display()
 
 
     def reset(self):
-        self.assert_value(0)
-        self.display()
-
-
-    def clock_write(self,  event):
-        pass
-
-
-    def clock_read(self, event):
-        pass
+        self.latch_value(0)

@@ -25,9 +25,9 @@ class Output(Component):
         '9': [" _ ","(_|"," _)"],
     }
 
-    def __init__(self, window, signal=None, data=None):
+    def __init__(self, window):
         self._mode = Output.MODE_NORMAL
-        super().__init__(window, const.COLOR_PAIR_RED, 'Output', 8, signal=signal, data=data)
+        super().__init__(window, const.COLOR_PAIR_RED, 'Output', 8)
 
 
     def display(self):
@@ -40,10 +40,3 @@ class Output(Component):
             for j in range(3):
                 self._window.addstr(1+j, 6 + i*4+ i, Output.digits[c][j], curses.color_pair(self._led_colour) | curses.A_BOLD)
         self._window.refresh()
-
-
-    def clock_read(self, event):
-        if isinstance(event, ClockPulse) and event.state == 1:
-            if self._signals.read_signal('OI'):
-                self.assert_value(self._data.read_value())
-                return

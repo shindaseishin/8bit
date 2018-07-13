@@ -5,11 +5,11 @@ from eventtypes import ClockPulse
 import const
 
 class Memory(Component):
-    def __init__(self, window, signal=None, data=None, address=None):
+    def __init__(self, window):
         self._ram = bytearray([42]*256)
         self._dump_top = 0
         self._latched_address = 0
-        super().__init__(window, const.COLOR_PAIR_RED, "Memory", 8,  signal=signal,  data=data,  address=address)
+        super().__init__(window, const.COLOR_PAIR_RED, "Memory", 8)
 
     def display(self):
         super().display()
@@ -45,26 +45,8 @@ class Memory(Component):
             self._dump_top += delta
 
 
-    def clock_write(self, event):
-        if isinstance(event, ClockPulse) and event.state == 1:
-            if self._signals.read_signal('RO'):
-                self._data.assert_value(self._ram[self._latched_address])
-            if self._signals.read_signal('II'):
-                self._signals.latch_instruction(self._ram[self._latched_address])
-
-
-    def clock_read(self, event):
-        if isinstance(event, ClockPulse) and event.state == 1:
-            if self._signals.read_signal('RI'):
-                self._ram[self._latched_address] = self._data.read_value()
-            if self._signals.read_signal('MI'):
-                self._latched_address = self._address.read_value()
-                self._cur_value = self._ram[self._latched_address]
-            if self._signals.read_signal('RN'):
-                self._latched_address = self._address.read_value()+1
-                self._address.assert_value(self._latched_address)
-                self._cur_value = self._ram[self._latched_address]
-            self.display()
+    def read_ram(self, address):
+        return self._ram[address]
 
 
     def load_mem_from_file(self, filename):

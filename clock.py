@@ -7,20 +7,21 @@ import const
 
 class Clock(Component):
 
-    def __init__(self, window, signal=None):
+    def __init__(self, window, decode=None):
         self._pause = True
         self._halt = False
         self._cycle = const.CLOCK_CYCLE
         self._thread = None
-        super().__init__(window, const.COLOR_PAIR_BLUE, "Clock", 1, signal=signal)
-        self.assert_value(1)
+        self._inst_decode = decode
+        super().__init__(window, const.COLOR_PAIR_BLUE, "Clock", 1)
+        self.latch_value(1)
 
     def __del__(self):
         self._thread.cancel()
 
 
     def display(self):
-        Component.display(self)
+        super().display()
         if self._halt == True:
             self._window.addstr(4, 2, "Halted")
         elif self._pause == True:
@@ -34,17 +35,13 @@ class Clock(Component):
 
 
     def pulse(self, window):
-        if self._signals.read_signal('HLT'):
-            self.halt()
-
-        if self._pause != True:
-            self.assert_value(1 - self._cur_value)
-            self.display()
-            zope.event.notify(ClockPulse(self._cur_value))
-            self.start_clock()
+        self.latch_value(1 - self._cur_value)
+        self.display()
+        self._inst_decode.pulse()
+        self.start()
 
 
-    def start_clock(self):
+    def start(self):
         if self._halt != True:
             self._thread = Timer(self._cycle, self.pulse, [self._window])
             self._thread.start()
@@ -52,8 +49,10 @@ class Clock(Component):
 
     def pause_toggle(self):
         self._pause = not self._pause
-        self.display()
-        self.start_clock()
+        if not self._pause:
+            self._thread.cancel()
+        else:
+            self.start()
 
 
     def change_speed(self,  direction):
@@ -68,13 +67,13 @@ class Clock(Component):
 
     def manual_pulse(self):
         if not self._halt and self._pause:
-            self.assert_value(1 - self._cur_value)
-            zope.event.notify(ClockPulse(self._cur_value))
+            self.latch_value(1 - self._cur_value)
+            self._inst_decode.pulse()
 
 
     def reset(self):
         self._thread.cancel()
         self._halt = False
         self._pause = True;
-        self.assert_value(0)
-        self.start_clock()
+        self.latch_value(1)
+        self.start()

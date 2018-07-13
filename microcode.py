@@ -1,81 +1,110 @@
+import const
+
 microcode = {
     # NOOP
-    0x0000: 0x400800,
-    0x0001: 0x101380,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: 0x0000,
+    0x0003: 0x0000,
 
     # LDA
-    0x0100: 0x400800,
-	0x0101: 0x101300,
-	0x0102: 0x500000,
-	0x0103: 0x180080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['RO'] | const.SIGNALS['MI'],
+    0x0003: const.SIGNALS['RO'] | const.SIGNALS['AI'],
 
     # STA
-	0x0200: 0x400800,
-	0x0201: 0x101300,
-	0x0202: 0x500000,
-	0x0203: 0x240080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['RO'] | const.SIGNALS['MI'],
+    0x0003: const.SIGNALS['AO'] | const.SIGNALS['RI'],
 
     # LDAI
-    0x0300: 0x400800,
-    0x0301: 0x101300,
-    0x0302: 0x180080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['RO'] | const.SIGNALS['AI'],
+    0x0003: 0x0000,
 
     # LDB
-    0x0400: 0x400800,
-    0x0401: 0x101300,
-    0x0402: 0x500000,
-    0x0403: 0x120080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['RO'] | const.SIGNALS['MI'],
+    0x0003: const.SIGNALS['RO'] | const.SIGNALS['BI'],
 
     # STB
-    0x0500: 0x400800,
-    0x0501: 0x101300,
-    0x0502: 0x500000,
-    0x0503: 0x210080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['RO'] | const.SIGNALS['MI'],
+    0x0003: const.SIGNALS['BO'] | const.SIGNALS['RI'],
 
-    #LDBI
-    0x0600: 0x400800,
-    0x0601: 0x101300,
-    0x0602: 0x120080,
+    # LDBI
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['RO'] | const.SIGNALS['BI'],
+    0x0003: 0x0000,
 
     # STE
-    0x0700: 0x400800,
-    0x0701: 0x101300,
-    0x0702: 0x500000,
-    0x0703: 0x210080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['RO'] | const.SIGNALS['MI'],
+    0x0003: const.SIGNALS['EO'] | const.SIGNALS['RI'],
 
     # ADD
-    0x0800: 0x400800,
-    0x0801: 0x101300,
-    0x0802: 0x088080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['EO'] | const.SIGNALS['AI'],
+    0x0003: 0x0000,
 
     # SUB
-    0x0900: 0x400800,
-    0x0901: 0x101300,
-    0x0902: 0x08C080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['SU'] | const.SIGNALS['EO'] | const.SIGNALS['AI'],
+    0x0003: 0x0000,
+
+#     'HLT' - 0x0800
+#     'MI'  - 0x4000
+#     'RI'  - 0x2000
+#     'RO'  - 0x1000
+#     'AI'  - 0x0800
+#     'AO'  - 0x0400
+#     'BI'  - 0x0200
+#     'BO'  - 0x0100
+#     'EO'  - 0x0080
+#     'SU'  - 0x0040
+#     'OI'  - 0x0020
+#     'CE'  - 0x0010
+#     'CO'  - 0x0008
+#     'J'   - 0x0004
+#     'II'  - 0x0002
+#     'RN'  - 0x0001
 
     # OUT
-    0x1B00: 0x400800,
-    0x1B01: 0x101300,
-    0x1B02: 0x500000,
-    0x1B02: 0x102080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['RO'] | const.SIGNALS['MI'],
+    0x0003: const.SIGNALS['RO'] | const.SIGNALS['OI'],
 
     # OUTI
-    0x1C00: 0x400800,
-    0x1C01: 0x101300,
-    0x1C02: 0x502080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['RO'] | const.SIGNALS['OI'],
+    0x0003: 0x0000,
 
     # OUTA
-    0x1D00: 0x400800,
-    0x1D01: 0x101300,
-    0x1D02: 0x042080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['AO'] | const.SIGNALS['OI'],
+    0x0003: 0x0000,
 
     # OUTB
-    0x1E00: 0x400800,
-    0x1E01: 0x101300,
-    0x1E02: 0x012080,
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['BO'] | const.SIGNALS['OI'],
+    0x0003: 0x0000,
 
     # HLT
-    0x1F00: 0x400800,
-    0x1F01: 0x101300,
-    0x1F02: 0x800080
+    0x0000: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0001: const.SIGNALS['RO'] | const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0002: const.SIGNALS['HLT'],
+    0x0003: 0x0000,
 }
