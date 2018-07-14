@@ -1,6 +1,5 @@
 import curses
 
-from eventtypes import ClockPulse
 from component import Component
 import const
 

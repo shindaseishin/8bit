@@ -1,7 +1,6 @@
 from component import Component
 
 import const
-from eventtypes import ClockPulse
 
 class Alu(Component):
     OPERATION_ADD = 1

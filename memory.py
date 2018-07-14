@@ -1,7 +1,6 @@
 import curses
 
 from component import Component
-from eventtypes import ClockPulse
 import const
 
 class Memory(Component):

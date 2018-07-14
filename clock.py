@@ -1,8 +1,6 @@
 from threading import Timer
-import zope.event
 
 from component import Component
-from eventtypes import ClockPulse
 import const
 
 class Clock(Component):

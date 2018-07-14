@@ -1,5 +1,4 @@
 from component import Component
-from eventtypes import ClockPulse
 import const
 
 class Register(Component):
