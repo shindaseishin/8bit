@@ -45,11 +45,11 @@ def interface(stdscr):
         'reg_b'   : Register(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 3), 'Register B'),
         'alu'     : Alu(curses.newwin(row_height * 1, col_width * 1, row_height * 0, col_width * 2)),
         'output'  : Output(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 3)),
-        'help'    : Help(curses.newwin(row_height * 1, col_width * 2, row_height * 3, col_width * 2))
     }
 
     components['mem'].load_mem_from_file('dump.ram')
 
+    help     = Help(curses.newwin(row_height * 1, col_width * 2, row_height * 3, col_width * 2))
     inst_dec = InstDecode(curses.newwin(row_height * 1, col_width * 2, row_height * 2, col_width * 2), components)
     clock    = Clock(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 2), decode=inst_dec)
 
