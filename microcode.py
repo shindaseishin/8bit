@@ -61,6 +61,12 @@ microcode = {
     0x0902: const.SIGNALS['SU'] | const.SIGNALS['EO'] | const.SIGNALS['AI'],
     0x0903: 0x0000,
 
+    # JMP
+    0x0A00: const.SIGNALS['MI'] | const.SIGNALS['CO'],
+    0x0A01: const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],
+    0x0A02: const.SIGNALS['J']  | const.SIGNALS['ROA'],
+    0x0A03: 0x0000,
+
     # OUT
     0x1B00: const.SIGNALS['MI'] | const.SIGNALS['CO'],
     0x1B01: const.SIGNALS['CE'] | const.SIGNALS['II'] | const.SIGNALS['RN'],

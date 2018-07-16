@@ -29,5 +29,5 @@ SIGNALS = {
     'CO'  : 0b00000000000001000, # Program Counter Out
     'J'   : 0b00000000000000100, # Jump
     'II'  : 0b00000000000000010, # Instruction In
-    'RN'  : 0b00000000000000001, # Increment Address         
+    'RN'  : 0b00000000000000001, # Increment Address
 }

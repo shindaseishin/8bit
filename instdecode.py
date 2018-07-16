@@ -63,7 +63,7 @@ class InstDecode(Component):
             self._components['data_bus'].latch_value(self._components['reg_a'].read_value())
         if self.read_signal('BO'):
             self._components['data_bus'].latch_value(self._components['reg_b'].read_value())
-            
+
         if (self.read_signal('AI') or self.read_signal('BI')) and self.read_signal('SU'):
             self._components['alu'].operate(self._components['reg_a'].read_value(), self._components['reg_b'].read_value(), Alu.OPERATION_SUB)
         elif self.read_signal('AI') or self.read_signal('BI'):
@@ -75,7 +75,7 @@ class InstDecode(Component):
             self._components['mem'].latch_address(self._components['addr_bus'].read_value())
         if self.read_signal('RI'):
             self._components['mem'].set_ram(self._components['data_bus'].read_value())
-        
+
         if self.read_signal('AI'):
             self._components['reg_a'].latch_value(self._components['data_bus'].read_value())
         if self.read_signal('BI'):
@@ -83,7 +83,7 @@ class InstDecode(Component):
 
 
         if self.read_signal('J'):
-            self._components['prog_cnt'].latch_value(self._components['mem'].read_value() >> 1)
+            self._components['prog_cnt'].latch_value(self._components['addr_bus'].read_value() >> 1)
         if self.read_signal('OI'):
             self._components['output'].latch_value(self._components['data_bus'].read_value())
         if self.read_signal('II'):
