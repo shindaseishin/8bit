@@ -1,5 +1,7 @@
 import curses
 from curses import wrapper
+import argparse
+from pathlib import Path
 
 import const
 from databus import DataBus
@@ -14,7 +16,7 @@ from alu import Alu
 from memory import Memory
 
 
-def interface(stdscr):
+def interface(stdscr, infile):
     curses.noecho()
     curses.curs_set(0)
     stdscr.clear
@@ -47,7 +49,7 @@ def interface(stdscr):
         'output'  : Output(curses.newwin(row_height * 1, col_width * 1, row_height * 1, col_width * 3)),
     }
 
-    components['mem'].load_mem_from_file('dump.ram')
+    components['mem'].load_mem_from_file(infile)
 
     help     = Help(curses.newwin(row_height * 1, col_width * 2, row_height * 3, col_width * 2))
     inst_dec = InstDecode(curses.newwin(row_height * 1, col_width * 2, row_height * 2, col_width * 2), components)
@@ -89,4 +91,13 @@ def interface(stdscr):
 
 
 if __name__ == "__main__":
-    wrapper(interface)
+
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('infile', help='name of the file to execute')
+    args = parser.parse_args()
+    input_file = Path(args.infile)
+    if not input_file.is_file():
+        print("Input file {} does not exist".format(args.infile))
+        exit()
+
+    wrapper(interface, args.infile)

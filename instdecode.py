@@ -10,7 +10,7 @@ class InstDecode(Component):
         self._components = components
         self._latched_instruction = self._components['mem'].read_ram(0)
         self._step = 0
-        super().__init__(window, const.COLOR_PAIR_YELLOW, "Instruction Decoder", 17)
+        super().__init__(window, const.COLOR_PAIR_YELLOW, "Instruction Decoder", 20)
 
         # Display flag names below the LED
         keys = list(const.SIGNALS)
@@ -30,6 +30,7 @@ class InstDecode(Component):
             self._components[c].display()
         self.display()
 
+    # Decode instructions and set control lines on clock low
     def clock_low(self):
         self.latch_value(0)
 
@@ -53,8 +54,9 @@ class InstDecode(Component):
         if self.read_signal('CE'):
             self._components['prog_cnt'].step()
 
+        # Put data on the busses
         if self.read_signal('CO'):
-            self._components['addr_bus'].latch_value(self._components['prog_cnt'].read_value() << 1)
+            self._components['addr_bus'].latch_value(self._components['prog_cnt'].read_value())
         if self.read_signal('ROA'):
             self._components['addr_bus'].latch_value(self._components['mem'].read_value())
         if self.read_signal('ROD'):
@@ -63,11 +65,6 @@ class InstDecode(Component):
             self._components['data_bus'].latch_value(self._components['reg_a'].read_value())
         if self.read_signal('BO'):
             self._components['data_bus'].latch_value(self._components['reg_b'].read_value())
-
-        if (self.read_signal('AI') or self.read_signal('BI')) and self.read_signal('SU'):
-            self._components['alu'].operate(self._components['reg_a'].read_value(), self._components['reg_b'].read_value(), Alu.OPERATION_SUB)
-        elif self.read_signal('AI') or self.read_signal('BI'):
-            self._components['alu'].operate(self._components['reg_a'].read_value(), self._components['reg_b'].read_value(), Alu.OPERATION_ADD)
         if self.read_signal('EO'):
             self._components['data_bus'].latch_value(self._components['alu'].read_value())
 
@@ -81,9 +78,17 @@ class InstDecode(Component):
         if self.read_signal('BI'):
             self._components['reg_b'].latch_value(self._components['data_bus'].read_value())
 
+        if self.read_signal('EE'):
+            if self.read_signal('SU'):
+                self._components['alu'].operate(self._components['reg_a'].read_value(), self._components['reg_b'].read_value(), Alu.OPERATION_SUB)
+            else:
+                self._components['alu'].operate(self._components['reg_a'].read_value(), self._components['reg_b'].read_value(), Alu.OPERATION_ADD)
 
         if self.read_signal('J'):
-            self._components['prog_cnt'].latch_value(self._components['addr_bus'].read_value() >> 1)
+            self._components['prog_cnt'].latch_value(self._components['addr_bus'].read_value())
+        if self.read_signal('JZ') and self._components['alu'].read_value() == 0x00:
+            self._components['prog_cnt'].latch_value(self._components['addr_bus'].read_value())
+
         if self.read_signal('OI'):
             self._components['output'].latch_value(self._components['data_bus'].read_value())
         if self.read_signal('II'):
@@ -92,7 +97,11 @@ class InstDecode(Component):
         if self.read_signal('RN'):
             self._components['mem'].operand()
 
-        self._step = (self._step + 1) & 0b11
+        if self.read_signal('HLT'):
+            self._step = 0x00
+        else:
+            self._step = (self._step + 1) & 0b11
+            
         self.refresh()
         return retval
 

@@ -63,4 +63,7 @@ class Memory(Component):
 
     def load_mem_from_file(self, filename):
         with open(filename, "rb") as f:
-             self._ram = bytearray(f.read(256))
+            data = bytearray(f.read(256))
+            for i in range(len(data), 256):
+                data.append(0x00)
+            self._ram = data

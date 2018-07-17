@@ -13,21 +13,24 @@ CLOCK_CYCLE = 0.05
 CLOCK_CYCLE_DELTA = 0.005
 
 SIGNALS = {
-    'HLT' : 0b10000000000000000, # Halt
-    'MI'  : 0b01000000000000000, # Memory Address Register In
-    'RI'  : 0b00100000000000000, # RAM In
-    'ROA' : 0b00010000000000000, # RAM Out Address
-    'ROD' : 0b00001000000000000, # RAM Out Address
-    'AI'  : 0b00000100000000000, # A Register In
-    'AO'  : 0b00000010000000000, # A Register Out
-    'BI'  : 0b00000001000000000, # B Register In
-    'BO'  : 0b00000000100000000, # B Register Out
-    'EO'  : 0b00000000010000000, # Sum Out
-    'SU'  : 0b00000000001000000, # Subtract
-    'OI'  : 0b00000000000100000, # Output In
-    'CE'  : 0b00000000000010000, # Program Counter Enable
-    'CO'  : 0b00000000000001000, # Program Counter Out
-    'J'   : 0b00000000000000100, # Jump
-    'II'  : 0b00000000000000010, # Instruction In
-    'RN'  : 0b00000000000000001, # Increment Address
+    'HLT' : 0b10000000000000000000, # Halt
+    'MI'  : 0b01000000000000000000, # Memory Address Register In
+    'RI'  : 0b00100000000000000000, # RAM In
+    'ROA' : 0b00010000000000000000, # RAM Out Address
+    'ROD' : 0b00001000000000000000, # RAM Out Address
+    'AI'  : 0b00000100000000000000, # A Register In
+    'AO'  : 0b00000010000000000000, # A Register Out
+    'BI'  : 0b00000001000000000000, # B Register In
+    'BO'  : 0b00000000100000000000, # B Register Out
+    'EO'  : 0b00000000010000000000, # Sum Out
+    'SU'  : 0b00000000001000000000, # Subtract
+    'EE'  : 0b00000000000100000000, # ALU enable
+    'OI'  : 0b00000000000010000000, # Output In
+    'CE'  : 0b00000000000001000000, # Program Counter Enable
+    'CO'  : 0b00000000000000100000, # Program Counter Out
+    'J'   : 0b00000000000000010000, # Jump
+    'JZ'  : 0b00000000000000001000, # Jump
+    'II'  : 0b00000000000000000100, # Instruction In
+    'RN'  : 0b00000000000000000010, # Increment Address
+    'PSS' : 0b00000000000000000001, # Increment Address
 }
