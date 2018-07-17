@@ -55,6 +55,7 @@ tokens = {
     "SUB"  : 0x0B,
     "JMP"  : 0x0C,
     "JMPC" : 0x0D,
+    "JMPO" : 0x0E,
     "OUT"  : 0x1B,
     "OUTI" : 0x1C,
     "OUTA" : 0x1D,

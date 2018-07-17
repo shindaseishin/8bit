@@ -34,13 +34,13 @@ class Clock(Component):
 
     def pulse(self, restart=True):
         self.latch_value(1 - self._cur_value)
-        self.display()
         if self._cur_value == 1:
             hlt = self._inst_decode.clock_high()
             if hlt:
                 self.halt()
         else:
             self._inst_decode.clock_low()
+        self.display()
 
         if restart:
             self.start()

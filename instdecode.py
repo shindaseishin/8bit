@@ -10,7 +10,7 @@ class InstDecode(Component):
         self._components = components
         self._latched_instruction = self._components['mem'].read_ram(0)
         self._step = 0
-        super().__init__(window, const.COLOR_PAIR_YELLOW, "Instruction Decoder", 20)
+        super().__init__(window, const.COLOR_PAIR_YELLOW, "Instruction Decoder", len(const.SIGNALS))
 
         # Display flag names below the LED
         keys = list(const.SIGNALS)
@@ -88,6 +88,8 @@ class InstDecode(Component):
             self._components['prog_cnt'].latch_value(self._components['addr_bus'].read_value())
         if self.read_signal('JZ') and self._components['alu'].read_value() == 0x00:
             self._components['prog_cnt'].latch_value(self._components['addr_bus'].read_value())
+        if self.read_signal('JO') and self._components['alu'].read_carry():
+            self._components['prog_cnt'].latch_value(self._components['addr_bus'].read_value())
 
         if self.read_signal('OI'):
             self._components['output'].latch_value(self._components['data_bus'].read_value())
@@ -101,7 +103,7 @@ class InstDecode(Component):
             self._step = 0x00
         else:
             self._step = (self._step + 1) & 0b11
-            
+
         self.refresh()
         return retval
 
