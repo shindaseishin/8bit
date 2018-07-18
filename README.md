@@ -103,7 +103,6 @@ It takes up to three arguments. The first two are mandatory and the third is opt
 ## Todo (in no particular order)
 
 * Improve the Assembler
-    * Stop choking on blank lines
     * Be able to declare variables
 * Resetting the computer does not update all components properly.
 * Have a proper main file that starts the interface rather than the interface being the main file.
