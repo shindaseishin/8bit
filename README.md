@@ -69,28 +69,28 @@ The instruction must be from the list below and the operand is optional for some
 
 The following instructions are known to the assembler:
 
-| Instruction | Name                     | Operand | Notes                                                      |
-|-------------|--------------------------|---------|-------|
-| NOOP        | No Operation             | N/A     |       |
-| LDA         | Load Register A from RAM | Address |       |
-| STA         | Store value in A to RAM  | Address |       |
-| LDAI        |                          |         |       |
-| LDAE        |                          |         |       |
-| LDB         |                          |         |       |
-| STB         |                          |         |       |
-| LDBI        |                          |         |       |
-| LDBE        |                          |         |       |
-| STE         |                          |         |       |
-| ADD         |                          |         |       |
-| SUB         |                          |         |       |
-| JMP         |                          |         |       |
-| JMPC        |                          |         |       |
-| JMPO        |                          |         |       |
-| OUT         |                          |         |       |
-| OUTI        |                          |         |       |
-| OUTA        |                          |         |       |
-| OUTB        |                          |         |       |
-| HLT         |                          |         |       |
+| Instruction | Name                          | Operand | Notes                                                  |
+|-------------|-------------------------------|---------|--------------------------------------------------------|
+| NOOP        | No Operation                  | N/A     |                                                        |
+| LDA         | Load Register A from RAM      | Address |                                                        |
+| STA         | Store value in A to RAM       | Address |                                                        |
+| LDAI        | Load value directly into A    | Value   |                                                        |
+| LDAE        | Load value from ALU into A    | N/A     |                                                        |
+| LDB         | Load Register B from RAM      | Address |                                                        |
+| STB         | Store value in B to RAM       | Address |                                                        |
+| LDBI        | Load value directly into B    | Value   |                                                        |
+| LDBE        | Load value from ALU into B    | N/A     |                                                        |
+| STE         | Store value in ALU to RAM     | Address |                                                        |
+| ADD         | Add values in A and B         | N/A     | Value is latched into ALU, not stored else where       |
+| SUB         | Subtract B from A             | N/A     | Value is latched into ALU, not stored else where       |
+| JMP         | Jump to Address               | Address |                                                        |
+| JMPC        | Jump if A and B are equal     | Address | Performs a subtraction, contents of ALU will be lost   |
+| JMPO        | Jump if ALU overflow flag set | Address |                                                        |
+| OUT         | Display contents of ram       | Address |                                                        |
+| OUTI        | Display value                 | Value   |                                                        |
+| OUTA        | Display contents of A         | N/A     |                                                        |
+| OUTB        | Display Contents of B         | N/A     |                                                        |
+| HLT         | Halt the computer             |         | All execution stopped. Only a reset will bring it back |
 
 
 ## Todo (in no particular order)
@@ -98,7 +98,7 @@ The following instructions are known to the assembler:
 * Improve the Assembler
     * Stop choking on blank lines
     * Be able to declare variables
-* Resetting the computer does not update all components properly. Dos't affect execution but would be nice to whatever
+* Resetting the computer does not update all components properly.
 * Have a proper main file that starts the interface rather than the interface being the main file.
 * V2 rewrite to use PyQT
 * V3 rewrite in C++ w/ QT
