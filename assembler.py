@@ -63,17 +63,31 @@ tokens = {
     "HLT"  : 0x1F
 }
 
+variables = {}
+
+
 with open(args.outfile, 'wb') as outfile, open(args.infile, 'r') as infile:
+    compiled = bytearray([0x00]*256)
+    pointer = 0
     for line in infile:
-        compiled = bytearray([0x00, 0x00])
+        line = line.split()
 
-        inst, *operand = line.split()
-        if inst[0] != '#':
-            if not operand or operand[0] == '#':
-                operand = 0x00
+        # Skip empty lines and full line comments
+        if len(line) == 0 or line[0][0] == '#':
+            continue
+
+        if line[0].upper() == 'VAR':
+            # this is where we will allocate space for variables
+            pass
+        else:
+            compiled[pointer] = tokens[line[0].upper()]
+            if len(line) == 1 or line[1][0] == '#':
+                compiled[pointer+1] = 0x00
             else:
-                operand = int(operand[0],16)
+                compiled[pointer+1] = int(line[1],16)
 
-            compiled[0] = tokens[inst.upper()]
-            compiled[1] = operand
-            outfile.write(compiled)
+            pointer += 2
+            if pointer > (256 / 2) - len(variables):
+                exit("Program too large to fit memory")
+
+    outfile.write(compiled)

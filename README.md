@@ -59,7 +59,7 @@ The system consists of the following components:
 
 A primitive assembler was added to allow users to write their programs in a simple assembly language and then convert the programs into executable programs for the computer. The assembler can deal with comments preceded with # either at the start of a line or following an Instruction.
 
-The assembler will currently choke on a blank line. Also you can't declare variables. To use a variable you just need to put some data at a memory location and then remember the address to hard code it into the executable.
+Unfortunately the assembled does not let you declare variables yet. To use a variable you just need to put some data at a memory location and then remember the address to hard code it into the executable.
 
 An instruction in the assembler follow the following structure:
 
@@ -92,6 +92,13 @@ The following instructions are known to the assembler:
 | OUTB        | Display Contents of B         | N/A     |                                                        |
 | HLT         | Halt the computer             |         | All execution stopped. Only a reset will bring it back |
 
+To execute the assembler you need to mark it as executable if it isn't already or invoke it as an argument to the python interpreter directly.
+
+It takes up to three arguments. The first two are mandatory and the third is optional.
+
+* -i filename, --infile=filename will load the specified file as the source filename
+* -o filename, --outfile=filename will create the given file name as the compiled output. If the file exists already the execution will be blocked
+* -w, --overwrite will allow overwriting of an existing compiled file
 
 ## Todo (in no particular order)
 
