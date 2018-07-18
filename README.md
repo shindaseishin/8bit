@@ -69,31 +69,28 @@ The instruction must be from the list below and the operand is optional for some
 
 The following instructions are known to the assembler:
 
-<table>
-  <thead>
-    <tr>
-      <th>Instruction</th>
-      <th>Name</th>
-      <th>Operand</th>
-      <th>Notes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <tr>NOOP</tr>
-      <tr>No Operation</tr>
-      <tr>N/A</tr>
-      <tr>Basically just takes up space and everyone's valuable time</tr>
-    </tr>
-    <tr>
-      <tr>LDA</tr>
-      <tr>Load Register A from RAM</tr>
-      <tr>Address to load value from</tr>
-      <tr>Loads the value stored in the location pointed to by the operand into Register A</tr>
-    </tr>
-  </tbody>
-</table>
-
+| Instruction | Name                     | Operand | Notes                                                      |
+|-------------|--------------------------|---------|-------|
+| NOOP        | No Operation             | N/A     |       |
+| LDA         | Load Register A from RAM | Address |       |
+| STA         | Store value in A to RAM  | Address |       |
+| LDAI        |                          |         |       |
+| LDAE        |                          |         |       |
+| LDB         |                          |         |       |
+| STB         |                          |         |       |
+| LDBI        |                          |         |       |
+| LDBE        |                          |         |       |
+| STE         |                          |         |       |
+| ADD         |                          |         |       |
+| SUB         |                          |         |       |
+| JMP         |                          |         |       |
+| JMPC        |                          |         |       |
+| JMPO        |                          |         |       |
+| OUT         |                          |         |       |
+| OUTI        |                          |         |       |
+| OUTA        |                          |         |       |
+| OUTB        |                          |         |       |
+| HLT         |                          |         |       |
 
 
 ## Todo (in no particular order)
