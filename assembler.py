@@ -64,29 +64,37 @@ tokens = {
 }
 
 variables = {}
-
+labels = {}
 
 with open(args.outfile, 'wb') as outfile, open(args.infile, 'r') as infile:
     compiled = bytearray([0x00]*256)
     pointer = 0
     for line in infile:
         line = line.split()
+        [x.upper() for x in line]
 
         # Skip empty lines and full line comments
         if len(line) == 0 or line[0][0] == '#':
             continue
 
-        if line[0].upper() == 'VAR':
+        # Process variable declarations
+        if line[0] == 'VAR':
             if line[1] in variables:
                 raise Exception("Variable {} declared twice".format(line[1]))
-            variables[line[1].upper()] = 255 - len(variables)
-            compiled[variables[line[1].upper()]] = int(line[2],16)
+            variables[line[1]] = 255 - len(variables)
+            compiled[variables[line[1]]] = int(line[2],16)
+
+        # Process label declarations
+        elif line[0][-1] == ':':
+            labels[line[0][:-1]] = pointer
         else:
-            compiled[pointer] = tokens[line[0].upper()]
+            compiled[pointer] = tokens[line[0]]
             if len(line) == 1 or line[1][0] == '#':
                 compiled[pointer+1] = 0x00
-            elif line[1].upper() in variables:
-                compiled[pointer+1] = variables[line[1].upper()]
+            elif line[1] in variables:
+                compiled[pointer+1] = variables[line[1]]
+            elif line[1] in labels and line[0][0:3] == 'JMP':
+                compiled[pointer+1] = labels[line[1]]
             else:
                 compiled[pointer+1] = int(line[1],16)
 
