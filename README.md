@@ -92,6 +92,20 @@ The following instructions are known to the assembler:
 | OUTB        | Display Contents of B         | N/A     |                                                        |
 | HLT         | Halt the computer             |         | All execution stopped. Only a reset will bring it back |
 
+You can declare a variable with the following form:
+`VAR name value`.
+Variable names are case insensitive so 'sum', 'Sum', and 'SUM' are all the same variable name. Value is any 8bit unsigned integer declared in hex format (0x2a). Variables must be declared before using them.
+
+You can declare a label for a jump by placing the label alone on a line followed by a ':'. For example:
+
+`
+FOO:
+ADD
+OUTE
+JMP FOO
+`
+Labels are not case sensitive.
+
 To execute the assembler you need to mark it as executable if it isn't already or invoke it as an argument to the python interpreter directly.
 
 It takes up to three arguments. The first two are mandatory and the third is optional.
@@ -103,7 +117,7 @@ It takes up to three arguments. The first two are mandatory and the third is opt
 ## Todo (in no particular order)
 
 * Improve the Assembler
-    * Be able to declare variables
+    * More error checking
 * Resetting the computer does not update all components properly.
 * Have a proper main file that starts the interface rather than the interface being the main file.
 * V2 rewrite to use PyQT
