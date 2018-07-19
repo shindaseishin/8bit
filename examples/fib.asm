@@ -1,10 +1,15 @@
+VAR sum 0x00
+
 # LOAD 0 into Reg B
-LDBI 0x00 # this is an end of line comment
+LDBI 0x00
 OUTB
 
+# Load 1 int Reg A
 LDAI 0x01
+
+#
 ADD
-STA 0xFF
+STA sum
 
 LDAE
 LDB 0xFF

@@ -77,12 +77,16 @@ with open(args.outfile, 'wb') as outfile, open(args.infile, 'r') as infile:
             continue
 
         if line[0].upper() == 'VAR':
-            # this is where we will allocate space for variables
-            pass
+            if line[1] in variables:
+                raise Exception("Variable {} declared twice".format(line[1]))
+            variables[line[1].upper()] = 255 - len(variables)
+            compiled[variables[line[1].upper()]] = int(line[2],16)
         else:
             compiled[pointer] = tokens[line[0].upper()]
             if len(line) == 1 or line[1][0] == '#':
                 compiled[pointer+1] = 0x00
+            elif line[1].upper() in variables:
+                compiled[pointer+1] = variables[line[1].upper()]
             else:
                 compiled[pointer+1] = int(line[1],16)
 
