@@ -98,12 +98,13 @@ Variable names are case insensitive so 'sum', 'Sum', and 'SUM' are all the same 
 
 You can declare a label for a jump by placing the label alone on a line followed by a ':'. For example:
 
-`
+```
 FOO:
 ADD
 OUTE
 JMP FOO
-`
+```
+
 Labels are not case sensitive.
 
 To execute the assembler you need to mark it as executable if it isn't already or invoke it as an argument to the python interpreter directly.
@@ -120,6 +121,7 @@ It takes up to three arguments. The first two are mandatory and the third is opt
     * More error checking
 * Resetting the computer does not update all components properly.
 * Have a proper main file that starts the interface rather than the interface being the main file.
+* Move classes and such into a directory structure so that it's not all just piled into one place
 * V2 rewrite to use PyQT
 * V3 rewrite in C++ w/ QT
 
