@@ -81,6 +81,8 @@ def interface(stdscr, infile):
         elif c == ord('r') or c == ord('R'):
             clock.reset()
             inst_dec.reset()
+            components['mem'].load_mem_from_file(infile)
+            inst_dec.refresh()
 
 
     clock.halt()

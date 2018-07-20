@@ -25,34 +25,44 @@ So I tried to copy Ben's design with his different components all talking to eac
 
 The system consists of the following components:
 
-* Clock
+* **Clock**
+
     Regulates the actions of the computer. Generated clock on and clock off events. It currently only send that clock signal to the instruction decoder
 
-* Data bus
+* **Data bus**
+
     Acts as a place for components to put their data so that other components can pick it up.
 
-* Address bus
+* **Address bus**
+
     Controls the data being read/written by the ram. By latching a value into the address bus the memory module will automatically point itself to that byte in memory.
 
-* Registers A & B
+* **Registers A & B**
+
     Two general purpose registers.
 
-* ALU
+* **ALU**
+
     Arithmetic Logic Unit. Does addition and subtraction on the values in Register A and B. Doing subtraction, B is always subtracted from A. Also tracks when an operation overflows and goes either above 255 on addition or below 0 on subtraction.
 
-* Program counter
+* **Program counter**
+
     Tracks the instruction to be executed. It actually holds the memory address of the next instruction to execute.
 
-* Output
+* **Output**
+
     Simple display to show integer numbers between 0 and 255.
 
-* Memory
+* **Memory**
+
     Contains both the actual RAM (a whopping 256 bytes of it) and the instruction address registers
 
-* Instruction decoder
+* **Instruction decoder**
+
     The fun part. This where all the magic happens. On low clock cycles the ID will take the current instruction and the microstep, look up it's control signals from the microcode and generate the control signals to be acted on on the next clock high pulse. On the high pulse it will look at each control signal and then act on which ones are active at a given moment. For example, if the /Counter Out/ and /Memory Address In/ signals are active it will take the current value from the Program Counter and puts it on the address bus. Then it tells the memory address register to latch in the value from the address bus.
 
-* Help
+* **Help**
+
     Just displays the keyboard commands to interact with the simulator.
 
 ## Assembler
@@ -119,6 +129,7 @@ It takes up to three arguments. The first two are mandatory and the third is opt
 
 * Improve the Assembler
     * More error checking
+    * Do it as a proper recursive descent parser, not the hacky crap that it is now.
 * Resetting the computer does not update all components properly.
 * Have a proper main file that starts the interface rather than the interface being the main file.
 * Move classes and such into a directory structure so that it's not all just piled into one place

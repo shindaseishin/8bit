@@ -61,6 +61,11 @@ class Memory(Component):
         self.latch_address(self._latched_address + 1)
 
 
+    def reset(self):
+        super().reset()
+        self._latched_address = 0;
+
+
     def load_mem_from_file(self, filename):
         with open(filename, "rb") as f:
             data = bytearray(f.read(256))

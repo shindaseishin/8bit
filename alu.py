@@ -25,4 +25,8 @@ class Alu(Component):
 
     def read_carry(self):
         return self._carry
-        
+
+
+    def reset(self):
+        super().reset()
+        self._carry = False
