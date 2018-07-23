@@ -130,8 +130,6 @@ It takes up to three arguments. The first two are mandatory and the third is opt
 * Improve the Assembler
     * More error checking
     * Do it as a proper recursive descent parser, not the hacky crap that it is now.
-* Resetting the computer does not update all components properly.
-* Have a proper main file that starts the interface rather than the interface being the main file.
 * Move classes and such into a directory structure so that it's not all just piled into one place
 * V2 rewrite to use PyQT
 * V3 rewrite in C++ w/ QT
