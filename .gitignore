@@ -107,3 +107,4 @@ venv.bak/
 *.e4p
 .eric6project/
 
+*.ram
