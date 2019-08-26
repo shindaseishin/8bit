@@ -1,18 +1,18 @@
-# 8bit - Simple computer simulator
+# 8bit - Simple computer emulator
 
 ## Description
 
-This is a small project I started after watching Ben Eater's 8bit bread board computer build series on Youtube. I wanted to do something similar but my wife would not be happy about me going out and buying a bunch of electronics components for no good reason. So instead of trying to convince her to bless the purchases I figured the next best thing would be to write a simulator that scratches the same itch.
+This is a small project I started after watching Ben Eater's 8bit bread board computer build series on Youtube. I wanted to do something similar but my wife would not be happy about me going out and buying a bunch of electronics components for no good reason. So instead of trying to convince her to bless the purchases I figured the next best thing would be to write a emulator that scratches the same itch.
 
-Good news is that I can work on the simulator on the bus ride to work.
+Good news is that I can work on the emulator on the bus ride to work.
 
-So once that was settled I had to decide what to write it in. I originally wanted to write it in C++ with QT as an interface but decided to go a different direction. I've been wanting to learn Python and needed a interesting project to work on to go and learn it. Plus a part of me derived a strange pleasure in writing a hardware simulator in a language that was definitely not a good match for it. I knew it would be slow. That didn't bother me. After all I would be spending most of my time stepping through programs one microcode instruction at a time. Speed wasn't an issue. Also QT is available as a binding for Python so there's that. Actually, I've been wanting to learn a bit of ncurses programming. Hows'about I scrap the QT plan and replace it with ncurses. That sounds fun.
+So once that was settled I had to decide what to write it in. I originally wanted to write it in C++ with QT as an interface but decided to go a different direction. I've been wanting to learn Python and needed a interesting project to work on to go and learn it. Plus a part of me derived a strange pleasure in writing a hardware emulator in a language that was definitely not a good match for it. I knew it would be slow. That didn't bother me. After all I would be spending most of my time stepping through programs one microcode instruction at a time. Speed wasn't an issue. Also QT is available as a binding for Python so there's that. Actually, I've been wanting to learn a bit of ncurses programming. Hows'about I scrap the QT plan and replace it with ncurses. That sounds fun.
 
 Alright so Python with ncurses. Now you know my thought process behind this.
 
 # Usage
 
-The simulator uses Python 3. With a bit of work it may run on 2 but I don't feel like doing that work. If it's important to you for some reason to get it running on 2, knock yourself out.
+The emulator uses Python 3. With a bit of work it may run on 2 but I don't feel like doing that work. If it's important to you for some reason to get it running on 2, knock yourself out.
 
 `python3 interface.py program.ram`
 
@@ -63,7 +63,7 @@ The system consists of the following components:
 
 * **Help**
 
-    Just displays the keyboard commands to interact with the simulator.
+    Just displays the keyboard commands to interact with the emulator.
 
 ## Assembler
 
