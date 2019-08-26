@@ -14,7 +14,7 @@ Alright so Python with ncurses. Now you know my thought process behind this.
 
 The emulator uses Python 3. With a bit of work it may run on 2 but I don't feel like doing that work. If it's important to you for some reason to get it running on 2, knock yourself out.
 
-`python3 interface.py program.ram`
+`python3 8bit.py program.ram`
 
 Currently the interface.py file is the main executable, but that will change soon. The program.ram is the file that contains the executable bytecode to execute.
 
