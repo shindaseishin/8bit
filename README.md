@@ -69,8 +69,6 @@ The system consists of the following components:
 
 A primitive assembler was added to allow users to write their programs in a simple assembly language and then convert the programs into executable programs for the computer. The assembler can deal with comments preceded with # either at the start of a line or following an Instruction.
 
-Unfortunately the assembled does not let you declare variables yet. To use a variable you just need to put some data at a memory location and then remember the address to hard code it into the executable.
-
 An instruction in the assembler follow the following structure:
 
 `[Instruction] [operand]`
